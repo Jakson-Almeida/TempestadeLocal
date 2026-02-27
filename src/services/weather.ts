@@ -5,10 +5,9 @@ const OPEN_METEO_URL = 'https://api.open-meteo.com/v1/forecast'
 interface OpenMeteoResponse {
   hourly?: {
     time?: string[]
-    precipitation_probability?: number[]
-    weathercode?: number[]
-    cloudcover?: number[]
-    windgusts_10m?: number[]
+    precipitation?: number[]
+    weather_code?: number[]
+    wind_gusts_10m?: number[]
   }
 }
 
@@ -16,16 +15,15 @@ export async function fetchHourlyWeather(latitude: number, longitude: number): P
   const url = new URL(OPEN_METEO_URL)
   url.searchParams.set('latitude', latitude.toString())
   url.searchParams.set('longitude', longitude.toString())
-  url.searchParams.set(
-    'hourly',
-    ['time', 'precipitation_probability', 'weathercode', 'cloudcover', 'windgusts_10m'].join(','),
-  )
+  // Não incluir "time" em hourly: a API retorna 400 (SurfacePressureAndHeightVariable). O array "time" vem na resposta automaticamente.
+  url.searchParams.set('hourly', 'precipitation,weather_code,wind_gusts_10m')
   url.searchParams.set('forecast_days', '1')
-  url.searchParams.set('timezone', 'auto')
+  url.searchParams.set('timezone', 'UTC')
 
   const res = await fetch(url.toString())
   if (!res.ok) {
-    throw new Error('Falha ao obter previsão do tempo')
+    const errBody = await res.text()
+    throw new Error(`Falha ao obter previsão do tempo: ${res.status} ${errBody.slice(0, 200)}`)
   }
 
   const data: OpenMeteoResponse = await res.json()
@@ -37,10 +35,10 @@ export async function fetchHourlyWeather(latitude: number, longitude: number): P
 
   const points: HourlyWeatherPoint[] = hourly.time.map((time, index) => ({
     time,
-    precipitationProbability: hourly.precipitation_probability?.[index],
-    weatherCode: hourly.weathercode?.[index],
-    cloudCover: hourly.cloudcover?.[index],
-    windGusts: hourly.windgusts_10m?.[index],
+    precipitationProbability: hourly.precipitation?.[index] != null ? Math.min(100, hourly.precipitation![index] * 10) : undefined,
+    weatherCode: hourly.weather_code?.[index],
+    cloudCover: undefined,
+    windGusts: hourly.wind_gusts_10m?.[index],
   }))
 
   return points

@@ -1,19 +1,12 @@
 import type { StormRiskSummary } from '../types.d.ts'
-import { useConfig } from '../context/ConfigContext.tsx'
 
-interface AIAdviceParams {
+export interface AIAdviceParams {
   locationLabel: string
   summary: StormRiskSummary
 }
 
-interface UseAIAdviceResult {
-  loading: boolean
-  error: string | null
-  advice: string | null
-  requestAdvice: () => Promise<void>
-}
-
-async function callOpenRouter(apiKey: string, { locationLabel, summary }: AIAdviceParams): Promise<string> {
+export async function getAIAdvice(apiKey: string, params: AIAdviceParams): Promise<string> {
+  const { locationLabel, summary } = params
   const messages = [
     {
       role: 'system',
@@ -43,7 +36,8 @@ async function callOpenRouter(apiKey: string, { locationLabel, summary }: AIAdvi
   })
 
   if (!res.ok) {
-    throw new Error('Falha ao chamar o modelo de IA (OpenRouter)')
+    const errText = await res.text()
+    throw new Error(`Falha ao chamar o modelo de IA (OpenRouter): ${res.status} ${errText.slice(0, 200)}`)
   }
 
   const data = await res.json()
@@ -53,37 +47,3 @@ async function callOpenRouter(apiKey: string, { locationLabel, summary }: AIAdvi
   }
   return content
 }
-
-export function useAIAdvice(params: AIAdviceParams | null): UseAIAdviceResult {
-  const { provider, getDecryptedKey } = useConfig()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [advice, setAdvice] = useState<string | null>(null)
-
-  async function requestAdvice() {
-    if (!params) return
-    setLoading(true)
-    setError(null)
-    try {
-      const apiKey = await getDecryptedKey()
-      if (!apiKey) {
-        throw new Error('API key não disponível. Confira as Configurações.')
-      }
-
-      let text: string
-      if (provider === 'openrouter') {
-        text = await callOpenRouter(apiKey, params)
-      } else {
-        throw new Error('Apenas OpenRouter está suportado neste MVP.')
-      }
-      setAdvice(text)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erro desconhecido ao buscar orientação da IA')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return { loading, error, advice, requestAdvice }
-}
-
