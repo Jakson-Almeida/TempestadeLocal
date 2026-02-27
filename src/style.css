@@ -1,0 +1,244 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #0f172a;
+  background: radial-gradient(circle at top, #0f172a 0, #020617 40%, #020617 100%);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 24px;
+  color: inherit;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 980px;
+  min-height: 560px;
+  background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(96, 165, 250, 0.16), transparent 55%), rgba(15, 23, 42, 0.96);
+  border-radius: 24px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow:
+    0 24px 60px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(15, 23, 42, 0.7);
+  padding: 20px 24px 18px;
+  display: flex;
+  flex-direction: column;
+  color: #e5e7eb;
+  backdrop-filter: blur(18px);
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.app-header h1 {
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+  color: #f9fafb;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+}
+
+.tab {
+  border: none;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #e5e7eb;
+  background: transparent;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.08s ease;
+}
+
+.tab:hover {
+  background: rgba(30, 64, 175, 0.4);
+  box-shadow: 0 0 0 1px rgba(129, 140, 248, 0.4);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #4f46e5, #22c55e);
+  box-shadow:
+    0 0 0 1px rgba(191, 219, 254, 0.7),
+    0 6px 18px rgba(15, 23, 42, 0.8);
+  color: #f9fafb;
+}
+
+.app-main {
+  flex: 1;
+  padding: 18px 2px 10px;
+  display: flex;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.panel.hidden {
+  display: none;
+}
+
+.panel h2 {
+  margin: 0 0 4px;
+  font-size: 1.2rem;
+  color: #e5e7eb;
+}
+
+.panel-error {
+  border-radius: 16px;
+  padding: 16px 18px;
+  background: rgba(127, 29, 29, 0.35);
+  border: 1px solid rgba(248, 113, 113, 0.5);
+}
+
+.panel-error h2 {
+  color: #fecaca;
+}
+
+.panel-error p {
+  margin: 4px 0 0;
+  color: #fee2e2;
+  font-size: 0.95rem;
+}
+
+.location-label {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+  color: #d1d5db;
+}
+
+.risk-card {
+  margin-top: 4px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  background: radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 60%),
+    rgba(15, 23, 42, 0.9);
+}
+
+.risk-label {
+  font-size: 0.9rem;
+  color: #e5e7eb;
+}
+
+.risk-value {
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.risk-baixo .risk-value {
+  color: #6ee7b7;
+}
+
+.risk-moderado .risk-value {
+  color: #fbbf24;
+}
+
+.risk-alto .risk-value {
+  color: #fb7185;
+}
+
+.risk-reason {
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+  color: #e5e7eb;
+}
+
+.hint {
+  margin: 8px 0 0;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.hint code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 1px 4px;
+  border-radius: 4px;
+  border: 1px solid rgba(30, 64, 175, 0.6);
+}
+
+.app-footer {
+  padding-top: 10px;
+  border-top: 1px solid rgba(148, 163, 184, 0.35);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.app-footer small {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 12px;
+  }
+
+  .app-shell {
+    padding: 16px 14px 14px;
+    border-radius: 18px;
+  }
+
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .app-main {
+    padding-top: 16px;
+  }
+}
