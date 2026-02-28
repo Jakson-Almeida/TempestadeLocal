@@ -1,0 +1,14 @@
+---
+description: Fazer git push após as principais alterações no projeto
+alwaysApply: true
+---
+
+# Git push após alterações
+
+Após concluir alterações principais no repositório (novas funcionalidades, correções de bugs, refatorações ou mudanças em vários arquivos):
+
+1. Verifique o status: `git status`
+2. Se houver alterações não commitadas, faça commit com mensagem clara: `git add -A` e `git commit -m "descrição"`
+3. Envie para o remoto: `git push`
+
+Não é necessário push para mudanças triviais (ex.: um comentário). Priorize push quando o trabalho for uma "unidade lógica" concluída.
